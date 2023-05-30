@@ -1,19 +1,22 @@
 package com.example.cardapio.controller;
 
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.cardapio.DTO.FoodDTO;
 import com.example.cardapio.entities.Food;
-import com.example.cardapio.repositories.FoodRepository;
+import com.example.cardapio.service.FoodService;
 
 
 @RestController
@@ -21,25 +24,37 @@ import com.example.cardapio.repositories.FoodRepository;
 public class FoodController {
 	
 	@Autowired
-	private FoodRepository repository;
+	private FoodService service;
 	
-	@CrossOrigin(origins = "*", allowedHeaders = "*")
+	/*@CrossOrigin(origins = "*", allowedHeaders = "*")
 	@PostMapping
 	public void saveFood(@RequestBody FoodDTO data) {
 		Food foodData = new Food(data);	
-		repository.save(foodData);
+		service.save(foodData);
 		return;
 		
 	}
+	*/
 
 	@CrossOrigin(origins = "*", allowedHeaders = "*")	
     @GetMapping
-    public List<FoodDTO> getAll(){
+    public ResponseEntity<List<FoodDTO>>findAll(){
     	
-    	List<Food> foodList = repository.findAll();
+    	List<Food> foodList = service.findAll();
     	List<FoodDTO> dto = foodList.stream().map(x-> new FoodDTO(x)).toList();
-    	return dto;
+    	return ResponseEntity.ok().body(dto) ;
 
     }
 
+	@CrossOrigin(origins = "*", allowedHeaders = "*")
+	@PostMapping
+	public ResponseEntity<Void> insert(@RequestBody FoodDTO objDTO) {
+		Food obj = service.fromDTO(objDTO);
+		obj = service.insert(obj);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("{id}").buildAndExpand(obj.getId()).toUri();
+		return ResponseEntity.created(uri).build();
+		
+		
+	
+	}
 }

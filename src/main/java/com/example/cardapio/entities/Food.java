@@ -1,5 +1,6 @@
 package com.example.cardapio.entities;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import com.example.cardapio.DTO.FoodDTO;
@@ -10,10 +11,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+
 @Table(name = "foods")
 @Entity(name = "foods")
-public class Food {
-
+public class Food implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
