@@ -4,10 +4,12 @@ package com.example.cardapio.controller;
 import java.net.URI;
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,6 +45,14 @@ public class FoodController {
     	List<Food> foodList = service.findAll();
     	List<FoodDTO> dto = foodList.stream().map(x-> new FoodDTO(x)).toList();
     	return ResponseEntity.ok().body(dto) ;
+
+    }
+	
+	@CrossOrigin(origins = "*", allowedHeaders = "*")	
+    @GetMapping(value="/{id}")
+    public ResponseEntity<FoodDTO>findById(@PathVariable Long id){
+		Food obj = service.findById(id);
+    	return ResponseEntity.ok().body(new FoodDTO(obj)) ;
 
     }
 

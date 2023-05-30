@@ -1,5 +1,7 @@
 package com.example.cardapio.DTO;
 
+import java.util.Optional;
+
 import com.example.cardapio.entities.Food;
 
 public class FoodDTO {
@@ -18,6 +20,10 @@ public class FoodDTO {
 		title = entity.getTitle();
 		image = entity.getImage();
 		price = entity.getPrice();
+	}
+
+	public FoodDTO(Optional<Food> obj) {
+	
 	}
 
 	public Long getId() {
