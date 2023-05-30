@@ -32,6 +32,11 @@ public class FoodService {
 	public Food insert(Food obj) {
 		return repo.save(obj);
 	}
+	
+	public void delete(Long id) {
+		findById(id);
+		repo.deleteById(id);
+	}
 
 	public Food fromDTO(FoodDTO objDTO) {
 		return new Food(objDTO.getId(), objDTO.getTitle(), objDTO.getImage(), objDTO.getPrice());
